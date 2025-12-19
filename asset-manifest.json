@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Film_cataloging_final_project-/static/css/main.51e81eb5.css",
+    "main.js": "/Film_cataloging_final_project-/static/js/main.85a54f79.js",
+    "index.html": "/Film_cataloging_final_project-/index.html",
+    "main.51e81eb5.css.map": "/Film_cataloging_final_project-/static/css/main.51e81eb5.css.map",
+    "main.85a54f79.js.map": "/Film_cataloging_final_project-/static/js/main.85a54f79.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.51e81eb5.css",
+    "static/js/main.85a54f79.js"
+  ]
+}
