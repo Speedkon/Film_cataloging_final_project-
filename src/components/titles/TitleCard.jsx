@@ -9,8 +9,8 @@ const { Text } = Typography;
 export default function TitleCard({ item }) {
   const { isFavorite, toggleFavorite, getRating, setRating } = useCatalog();
 
-  const fav = isFavorite(item.id);
-  const myRating = getRating(item.id);
+  const fav = isFavorite(item.key);
+  const myRating = getRating(item.key);
 
   const genres = useMemo(() => (item.genres || []).slice(0, 3), [item.genres]);
 
@@ -18,7 +18,7 @@ export default function TitleCard({ item }) {
     <Card
       hoverable
       cover={
-        <Link to={`/title/${item.id}`} style={{ display: "block" }}>
+        <Link to={`/title/${item.mediaType}/${item.id}`} style={{ display: "block" }}>
           <div style={{ aspectRatio: "2 / 3", overflow: "hidden", background: "#111" }}>
             {item.imageUrl ? (
               <img
@@ -34,8 +34,8 @@ export default function TitleCard({ item }) {
         </Link>
       }
     >
-      <Space direction="vertical" size={6} style={{ width: "100%" }}>
-        <Link to={`/title/${item.id}`} style={{ textDecoration: "none" }}>
+      <Space orientation="vertical" size={6} style={{ width: "100%" }}>
+        <Link to={`/title/${item.mediaType}/${item.id}`} style={{ textDecoration: "none" }}>
           <Text strong style={{ fontSize: 16, color: "#111" }}>
             {item.title}
           </Text>
@@ -47,17 +47,17 @@ export default function TitleCard({ item }) {
             <Tag key={g}>{g}</Tag>
           ))}
           {typeof item.rating === "number" && (
-            <Tag color="gold">IMDb: {item.rating.toFixed(1)}</Tag>
+            <Tag color="gold">Rating: {item.rating.toFixed(1)}</Tag>
           )}
         </Space>
 
         <Divider style={{ margin: "10px 0" }} />
 
-        <Space direction="vertical" size={8} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={8} style={{ width: "100%" }}>
           <Button
             type={fav ? "primary" : "default"}
             icon={fav ? <HeartFilled /> : <HeartOutlined />}
-            onClick={() => toggleFavorite(item.id)}
+            onClick={() => toggleFavorite(item.key)}
             block
           >
             {fav ? "In favorites" : "Add to favorites"}
@@ -67,12 +67,7 @@ export default function TitleCard({ item }) {
             <Text type="secondary" style={{ display: "block", marginBottom: 4 }}>
               My rating:
             </Text>
-            <Rate
-              count={10}
-              value={myRating}
-              onChange={(v) => setRating(item.id, v)} // 0..10
-              allowClear
-            />
+            <Rate count={10} value={myRating} onChange={(v) => setRating(item.key, v)} allowClear />
           </div>
         </Space>
       </Space>

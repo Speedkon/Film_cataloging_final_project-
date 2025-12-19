@@ -1,69 +1,52 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getJSON, setJSON } from "../utils/storage";
 
-const FAVORITES_KEY = "imdb_favorites_v1";
-const RATINGS_KEY = "imdb_ratings_v1";
+const FAVORITES_KEY = "tmdb_favorites_v1";
+const RATINGS_KEY = "tmdb_ratings_v1";
 
 const CatalogContext = createContext(null);
 
 export function CatalogProvider({ children }) {
-  const [favorites, setFavorites] = useState(() => getJSON(FAVORITES_KEY, []));
-  const [ratings, setRatings] = useState(() => getJSON(RATINGS_KEY, {}));
+  const [favorites, setFavorites] = useState(() => getJSON(FAVORITES_KEY, [])); // array of "movie:123"
+  const [ratings, setRatings] = useState(() => getJSON(RATINGS_KEY, {})); // { "movie:123": 8 }
 
-  useEffect(() => {
-    setJSON(FAVORITES_KEY, favorites);
-  }, [favorites]);
-
-  useEffect(() => {
-    setJSON(RATINGS_KEY, ratings);
-  }, [ratings]);
+  useEffect(() => setJSON(FAVORITES_KEY, favorites), [favorites]);
+  useEffect(() => setJSON(RATINGS_KEY, ratings), [ratings]);
 
   const favoritesSet = useMemo(() => new Set(favorites), [favorites]);
 
-  const toggleFavorite = (id) => {
-    if (!id) return;
-    setFavorites((prev) => {
-      const has = prev.includes(id);
-      if (has) return prev.filter((x) => x !== id);
-      return [id, ...prev];
-    });
+  const toggleFavorite = (key) => {
+    if (!key) return;
+    setFavorites((prev) => (prev.includes(key) ? prev.filter((x) => x !== key) : [key, ...prev]));
   };
 
-  const isFavorite = (id) => favoritesSet.has(id);
+  const isFavorite = (key) => favoritesSet.has(key);
 
-  const getRating = (id) => {
-    if (!id) return 0;
-    const v = ratings[id];
+  const getRating = (key) => {
+    if (!key) return 0;
+    const v = ratings[key];
     return typeof v === "number" ? v : 0;
   };
 
-  const setRating = (id, value) => {
-    if (!id) return;
+  const setRating = (key, value) => {
+    if (!key) return;
     const v = Number(value);
     if (!Number.isFinite(v)) return;
 
-    // 0 = remove rating
     if (v <= 0) {
       setRatings((prev) => {
         const next = { ...prev };
-        delete next[id];
+        delete next[key];
         return next;
       });
       return;
     }
 
     const clamped = Math.max(1, Math.min(10, Math.round(v)));
-    setRatings((prev) => ({ ...prev, [id]: clamped }));
+    setRatings((prev) => ({ ...prev, [key]: clamped }));
   };
 
-  const value = {
-    favorites,
-    ratings,
-    toggleFavorite,
-    isFavorite,
-    getRating,
-    setRating,
-  };
+  const value = { favorites, ratings, toggleFavorite, isFavorite, getRating, setRating };
 
   return <CatalogContext.Provider value={value}>{children}</CatalogContext.Provider>;
 }

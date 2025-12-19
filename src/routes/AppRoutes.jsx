@@ -16,7 +16,8 @@ export default function AppRoutes() {
       <Route path="/series" element={<Series />} />
       <Route path="/cartoons" element={<Cartoons />} />
       <Route path="/catalog" element={<MyCatalog />} />
-      <Route path="/title/:id" element={<TitleDetails />} />
+      {/* <Route path="/title/:id" element={<TitleDetails />} /> */}
+      <Route path="/title/:mediaType/:id" element={<TitleDetails />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
