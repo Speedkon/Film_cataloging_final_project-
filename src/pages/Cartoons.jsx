@@ -108,7 +108,7 @@ export default function Cartoons() {
         genreDisabled
       />
 
-      {error ? <Alert type="error" message={error} showIcon /> : null}
+      {error ? <Alert type="error" title={error} showIcon /> : null}
 
       <Row gutter={[12, 12]}>
         {viewItems.map((it) => (

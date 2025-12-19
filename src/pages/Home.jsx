@@ -77,9 +77,9 @@ export default function Home() {
   }, []);
 
   return (
-    <Space direction="vertical" size={12} style={{ width: "100%" }}>
+    <Space orientation="vertical" size={12} style={{ width: "100%" }}>
       <Card>
-        <Space direction="vertical" size={8} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={8} style={{ width: "100%" }}>
           <Title level={2} style={{ margin: 0 }}>Home</Title>
           <Text type="secondary">Trending mixed titles + search</Text>
 
@@ -105,7 +105,7 @@ export default function Home() {
         </Space>
       </Card>
 
-      {error ? <Alert type="error" message={error} showIcon /> : null}
+      {error ? <Alert type="error" title={error} showIcon /> : null}
 
       <Row gutter={[12, 12]}>
         {sortedItems.map((it) => (
